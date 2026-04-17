@@ -2,23 +2,167 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <title>Database Robot di Aisha</title>
+    <title>Nexus Robotics | Central Command</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background-color: #121212; color: #ffffff; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .container { background-color: #1e1e1e; padding: 40px; border-radius: 15px; box-shadow: 0 8px 32px rgba(0, 229, 255, 0.2); text-align: center; border: 1px solid #333; }
-        h1 { color: #00e5ff; margin-bottom: 10px; text-shadow: 0 0 10px #00e5ff; }
-        .btn { display: block; background-color: #00e5ff; color: #121212; padding: 15px; margin: 15px auto; text-decoration: none; font-weight: bold; border-radius: 8px; transition: 0.3s; width: 250px; }
-        .btn:hover { background-color: #ffffff; transform: scale(1.05); box-shadow: 0 0 15px #00e5ff; }
+        :root {
+            --primary-color: #0b1120;
+            --secondary-color: #1e293b;
+            --accent-color: #3b82f6;
+            --accent-hover: #2563eb;
+            --danger-color: #ef4444;
+            --success-color: #10b981;
+            --bg-color: #f1f5f9;
+            --text-color: #334155;
+            --text-light: #94a3b8;
+            --card-bg: #ffffff;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0; padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.7;
+        }
+        h1, h2, h3, h4 { letter-spacing: -0.5px; }
+        .navbar {
+            background-color: var(--primary-color);
+            padding: 15px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--accent-color);
+            position: sticky; top: 0; z-index: 1000;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3);
+        }
+        .nav-logo {
+            color: white; font-size: 24px; font-weight: 800; letter-spacing: 2px; text-decoration: none; display: flex; align-items: center; gap: 10px;
+        }
+        .nav-logo span { color: var(--accent-color); }
+        .nav-logo::before { content: ''; display: inline-block; width: 12px; height: 12px; background-color: var(--accent-color); border-radius: 50%; box-shadow: 0 0 10px var(--accent-color); }
+        .nav-links a {
+            color: var(--text-light); text-decoration: none; margin-left: 30px; font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s;
+        }
+        .nav-links a:hover { color: white; }
+        .badge-clearance { display: inline-block; padding: 4px 10px; border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: bold; text-transform: uppercase; margin-bottom: 15px; }
+        .clearance-red { background: rgba(239, 68, 68, 0.1); color: var(--danger-color); border: 1px solid var(--danger-color); }
+        .clearance-green { background: rgba(16, 185, 129, 0.1); color: var(--success-color); border: 1px solid var(--success-color); }
+        .clearance-blue { background: rgba(59, 130, 246, 0.1); color: var(--accent-color); border: 1px solid var(--accent-color); }
+        .hero { background: linear-gradient(135deg, rgba(11,17,32,0.95) 0%, rgba(30,41,59,0.85) 100%), url('https://images.unsplash.com/photo-1589254065878-42c9da997008?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80') center/cover fixed; color: white; padding: 140px 20px; text-align: center; border-bottom: 1px solid #334155; }
+        .hero h1 { font-size: 60px; margin: 0 0 20px 0; font-weight: 800; text-transform: uppercase; letter-spacing: -2px; text-shadow: 0 4px 20px rgba(0,0,0,0.5); }
+        .hero h1 span { color: var(--accent-color); }
+        .hero p.lead { font-size: 20px; color: #cbd5e1; max-width: 800px; margin: 0 auto 30px auto; font-weight: 300; }
+        .divisions-container { max-width: 1400px; margin: 80px auto; padding: 0 20px; }
+        .section-title { font-size: 36px; color: var(--primary-color); margin-bottom: 10px; text-align: center; text-transform: uppercase; letter-spacing: -1px; }
+        .section-subtitle { text-align: center; color: var(--text-light); font-size: 16px; max-width: 700px; margin: 0 auto 60px auto; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 40px; }
+        .card { background: white; border-radius: 16px; padding: 40px; box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1); border: 1px solid #e2e8f0; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); text-decoration: none; color: inherit; display: flex; flex-direction: column; position: relative; overflow: hidden; }
+        .card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--accent-color); transform: scaleX(0); transition: transform 0.4s ease; transform-origin: left; }
+        .card:hover { transform: translateY(-10px); box-shadow: 0 25px 40px -15px rgba(0, 0, 0, 0.15); }
+        .card:hover::before { transform: scaleX(1); }
+        .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
+        .card-icon { font-size: 40px; background: var(--bg-color); width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; border-radius: 16px; }
+        .card h3 { font-size: 24px; margin: 0 0 15px 0; color: var(--primary-color); }
+        .card p.desc { color: #475569; line-height: 1.8; margin-bottom: 25px; flex-grow: 1; text-align: justify; font-size: 15px; }
+        .tech-specs { background: #f8fafc; padding: 15px; border-radius: 8px; margin-bottom: 25px; border: 1px dashed #cbd5e1; }
+        .tech-specs ul { margin: 0; padding-left: 20px; color: #64748b; font-size: 13px; }
+        .tech-specs li { margin-bottom: 5px; }
+        .card-btn { display: flex; justify-content: space-between; align-items: center; color: var(--accent-color); font-weight: 700; padding-top: 20px; border-top: 1px solid #f1f5f9; text-transform: uppercase; font-size: 14px; letter-spacing: 1px; }
+        .card:hover .card-btn { color: var(--accent-hover); gap: 10px; }
+        .api-section { background: var(--secondary-color); padding: 80px 20px; margin-top: 100px; color: white; text-align: center; position: relative; }
+        .api-section::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, transparent, var(--accent-color), transparent); }
+        .btn-api { display: inline-block; background: transparent; color: white; border: 2px solid var(--accent-color); padding: 16px 40px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 16px; text-transform: uppercase; letter-spacing: 1px; transition: all 0.3s; margin-top: 30px; }
+        .btn-api:hover { background: var(--accent-color); box-shadow: 0 0 20px rgba(59, 130, 246, 0.4); }
+        .footer { background-color: var(--primary-color); color: var(--text-light); padding: 60px 20px 30px; margin-top: 80px; font-size: 14px; border-top: 1px solid #334155; }
+        @media (max-width: 900px) { .navbar { padding: 15px 20px; } .footer { padding: 40px 20px; } }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🤖 ROBOT SYSTEM API</h1>
-        <p>Seleziona un'opzione per accedere ai dati:</p>
-        <a href="/tutti_i_robot" class="btn">🔌 DATI GREZZI (JSON)</a>
-        <a href="/combattimento" class="btn">⚔️ COMBATTIMENTO</a>
-        <a href="/modelli_storici" class="btn">📜 ARCHIVI STORICI</a>
-        <a href="/super_batteria" class="btn">🔋 ALTA DURATA</a>
-    </div>
+    <nav class="navbar">
+        <a href="/" class="nav-logo">NEXUS <span>ROBOTICS</span></a>
+        <div class="nav-links">
+            <a href="#database">Database Access</a>
+            <a href="/tutti_i_robot">Developer API</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1>Global <span>Command</span> Center</h1>
+        <p class="lead">Infrastruttura crittografata per la gestione, il monitoraggio e il deployment delle unità robotiche Nexus su scala globale. Accesso ristretto al personale provvisto di autorizzazione biometrica di Livello 4.</p>
+    </section>
+
+    <main class="divisions-container" id="database">
+        <h2 class="section-title">Directory Operativa</h2>
+        <p class="section-subtitle">Seleziona il modulo dipartimentale per stabilire una connessione diretta con i cluster dei database locali. Tutte le query di estrazione dati sono registrate nei log di sistema.</p>
+        <div class="grid">
+            <a href="/combattimento" class="card">
+                <div class="card-header">
+                    <div class="card-icon">🛡️</div>
+                    <span class="badge-clearance clearance-red">Clearance: Level 5 (Top Secret)</span>
+                </div>
+                <h3>Divisione Difesa Strategica</h3>
+                <p class="desc">Questo compartimento mainframe gestisce esclusivamente le unità tattiche e i droidi da combattimento. Questi asset sono progettati per il dispiegamento rapido in zone di conflitto, soppressione delle minacce e protezione perimetrale di strutture governative. L'infrastruttura di rete di queste unità utilizza crittografia quantistica per prevenire l'hiring remoto e l'override dei comandi.</p>
+                <div class="tech-specs">
+                    <ul>
+                        <li><strong>Protocollo di Ingaggio:</strong> Autonomo / Supervisionato (Regola 9)</li>
+                        <li><strong>Armamento Integrato:</strong> Dispositivi a energia diretta, balistica pesante</li>
+                        <li><strong>Sensori:</strong> Termici, LiDAR, Rilevamento Biometrico fino a 5km</li>
+                    </ul>
+                </div>
+                <div class="card-btn"><span>Inizializza Connessione</span> <span>→</span></div>
+            </a>
+            <a href="/super_batteria" class="card">
+                <div class="card-header">
+                    <div class="card-icon">⚡</div>
+                    <span class="badge-clearance clearance-blue">Clearance: Level 3 (Classified)</span>
+                </div>
+                <h3>Sistemi ad Alta Autonomia</h3>
+                <p class="desc">Sezione dedicata al tracciamento in tempo reale dei modelli di punta per l'esplorazione estrema e la logistica a lungo raggio. Equipaggiati con micro-reattori a fusione fredda e batterie a stato solido di terza generazione, questi robot sono progettati per operare in ambienti ostili (spazio profondo, fondali oceanici, zone radioattive) garantendo una longevità operativa che supera le 8000 ore senza cicli di manutenzione.</p>
+                <div class="tech-specs">
+                    <ul>
+                        <li><strong>Tecnologia Core:</strong> Reattore Micro-Trizio / Celle Solari Graphene</li>
+                        <li><strong>Manutenzione Predittiva:</strong> Algoritmo AI di auto-diagnostica</li>
+                        <li><strong>Tasso di Usura:</strong> -45% rispetto ai modelli standard industriali</li>
+                    </ul>
+                </div>
+                <div class="card-btn"><span>Analizza Metriche Energetiche</span> <span>→</span></div>
+            </a>
+            <a href="/modelli_storici" class="card">
+                <div class="card-header">
+                    <div class="card-icon">🏛️</div>
+                    <span class="badge-clearance clearance-green">Clearance: Level 1 (Internal)</span>
+                </div>
+                <h3>Archivio Storico & Legacy</h3>
+                <p class="desc">Database in modalità "Read-Only" (Sola Lettura) contenente i dump di memoria e le specifiche hardware di tutte le unità di prima generazione dismesse, prodotte e schierate prima del 1° Gennaio 2000. Sebbene fisicamente obsolete o distrutte, i registri neurali di queste macchine vengono costantemente analizzati per addestrare i moderni modelli di Machine Learning, studiare l'obsolescenza dei materiali ed evitare regressioni del codice sorgente.</p>
+                <div class="tech-specs">
+                    <ul>
+                        <li><strong>Stato Hardware:</strong> Decommissionato / Dismesso</li>
+                        <li><strong>Formato Dati:</strong> Cold Storage (Archiviazione su nastro magnetico)</li>
+                        <li><strong>Utilizzo Attuale:</strong> Reverse Engineering & Training AI Set</li>
+                    </ul>
+                </div>
+                <div class="card-btn"><span>Accedi ai Registri Legacy</span> <span>→</span></div>
+            </a>
+        </div>
+    </main>
+
+    <section class="api-section">
+        <h2 style="margin:0; font-size: 32px; letter-spacing: -1px;">Integrazione Dati di Rete (REST API)</h2>
+        <p style="color: #94a3b8; max-width: 800px; margin: 20px auto; font-size: 18px; line-height: 1.8;">
+            L'intero catalogo dei dati è esposto e interrogabile tramite endpoint protetti per facilitare l'integrazione con sistemi ERP di terze parti, interfacce militari e applicazioni mobili aziendali. Il formato di interscambio predefinito è <span style="color: var(--accent-color); font-family: monospace;">application/json</span>.
+        </p>
+        <a href="/tutti_i_robot" class="btn-api">Visualizza Endpoint JSON Grezzo</a>
+    </section>
+
+    <footer class="footer">
+        <div style="max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;">
+            <p>&copy; 2026 Nexus Robotics Corporation. Tutti i diritti riservati.</p>
+            <div style="font-family: monospace; text-align: right;">
+                SYS_VERSION: 14.5.2<br>
+                SERVER: MARIADB-CORE-01<br>
+                FRAMEWORK: PYTHON/FLASK ENCRYPTED
+            </div>
+        </div>
+    </footer>
 </body>
 </html>

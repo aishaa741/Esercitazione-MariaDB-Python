@@ -1,34 +1,130 @@
 <!DOCTYPE html>
-<html>
+<html lang="it">
 <head>
     <meta charset="UTF-8">
+    <title>{{ titolo }} | Nexus DB</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background-color: #121212; color: white; text-align: center; padding: 50px; }
-        h1 { color: #00e5ff; text-shadow: 0 0 10px #00e5ff; margin-bottom: 30px; }
-        table { margin: auto; border-collapse: collapse; width: 80%; background: #1e1e1e; border-radius: 10px; overflow: hidden; box-shadow: 0 8px 32px rgba(0,229,255,0.2); }
-        th, td { padding: 15px; border-bottom: 1px solid #333; text-align: center; }
-        th { background-color: #00e5ff; color: #121212; text-transform: uppercase; font-weight: bold; }
-        tr:hover { background-color: #282828; }
-        .back-btn { display: inline-block; margin-top: 30px; padding: 12px 25px; background: transparent; color: #00e5ff; border: 2px solid #00e5ff; text-decoration: none; border-radius: 8px; transition: 0.3s; font-weight: bold; }
-        .back-btn:hover { background: #00e5ff; color: #121212; box-shadow: 0 0 15px #00e5ff; }
+        :root {
+            --primary-color: #0b1120;
+            --secondary-color: #1e293b;
+            --accent-color: #3b82f6;
+            --accent-hover: #2563eb;
+            --danger-color: #ef4444;
+            --success-color: #10b981;
+            --bg-color: #f1f5f9;
+            --text-color: #334155;
+            --text-light: #94a3b8;
+            --card-bg: #ffffff;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0; padding: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.7;
+        }
+        h1, h2, h3, h4 { letter-spacing: -0.5px; }
+        .navbar {
+            background-color: var(--primary-color);
+            padding: 15px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--accent-color);
+            position: sticky; top: 0; z-index: 1000;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3);
+        }
+        .nav-logo {
+            color: white; font-size: 24px; font-weight: 800; letter-spacing: 2px; text-decoration: none; display: flex; align-items: center; gap: 10px;
+        }
+        .nav-logo span { color: var(--accent-color); }
+        .nav-logo::before { content: ''; display: inline-block; width: 12px; height: 12px; background-color: var(--accent-color); border-radius: 50%; box-shadow: 0 0 10px var(--accent-color); }
+        .nav-links a {
+            color: var(--text-light); text-decoration: none; margin-left: 30px; font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: 1px; transition: color 0.3s;
+        }
+        .nav-links a:hover { color: white; }
+        .page-header { background: var(--secondary-color); color: white; padding: 60px 50px; border-bottom: 4px solid var(--accent-color); position: relative; overflow: hidden; }
+        .page-header::after { content: ''; position: absolute; top: 0; right: 0; bottom: 0; left: 0; background: linear-gradient(90deg, rgba(11,17,32,0.9) 0%, rgba(30,41,59,0.4) 100%), url('https://images.unsplash.com/photo-1485827404703-89b55fcc595e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80') center/cover; opacity: 0.5; pointer-events: none; }
+        .header-content { position: relative; z-index: 10; max-width: 1200px; margin: 0 auto; }
+        .page-header h1 { margin: 0; font-size: 40px; letter-spacing: -1px; text-transform: uppercase; }
+        .page-header p { margin-top: 15px; color: var(--text-light); font-size: 16px; max-width: 900px; line-height: 1.8; text-align: justify; }
+        .dashboard-bar { background-color: #0f172a; color: white; padding: 15px 50px; display: flex; justify-content: space-between; font-family: 'JetBrains Mono', monospace; font-size: 13px; border-bottom: 1px solid #334155; }
+        .status-indicator { display: flex; align-items: center; gap: 8px; color: var(--success-color); }
+        .status-indicator::before { content: ''; display: block; width: 8px; height: 8px; background-color: var(--success-color); border-radius: 50%; box-shadow: 0 0 8px var(--success-color); animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
+        .container { max-width: 1400px; margin: 40px auto; padding: 0 20px; }
+        .table-wrapper { background: var(--card-bg); border-radius: 8px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1); overflow: hidden; border: 1px solid #e2e8f0; }
+        .table-header { padding: 20px 25px; background-color: white; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; }
+        .table-header h3 { margin: 0; font-size: 18px; color: var(--secondary-color); }
+        .record-count { background: #f1f5f9; padding: 5px 12px; border-radius: 20px; font-size: 13px; font-weight: bold; color: var(--text-color); }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 16px 25px; text-align: left; border-bottom: 1px solid #e2e8f0; font-size: 14px; }
+        th { background-color: #f8fafc; color: #64748b; font-weight: 700; text-transform: uppercase; font-size: 12px; letter-spacing: 1px; }
+        tr:last-child td { border-bottom: none; }
+        tr:hover td { background-color: #f1f5f9; }
+        .type-badge { background-color: #e0f2fe; color: #0284c7; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: 700; text-transform: uppercase; }
+        .btn-back { display: inline-flex; align-items: center; gap: 8px; margin-top: 30px; padding: 12px 24px; background-color: white; border: 1px solid #cbd5e1; color: var(--text-color); text-decoration: none; border-radius: 6px; font-weight: 600; transition: all 0.2s; font-size: 14px; }
+        .btn-back:hover { background-color: #f8fafc; border-color: #94a3b8; transform: translateX(-5px); }
+        .footer { background-color: var(--primary-color); color: var(--text-light); padding: 60px 20px 30px; margin-top: 80px; font-size: 14px; border-top: 1px solid #334155; }
+        @media (max-width: 900px) { .navbar, .page-header, .container { padding-left: 20px; padding-right: 20px; } .dashboard-bar { padding: 15px 20px; flex-direction: column; gap: 10px; } }
     </style>
 </head>
 <body>
-    <h1>{{ titolo }}</h1>
-    <table>
-        <tr>
-            <th>ID</th><th>NOME</th><th>TIPO</th><th>ANNO</th><th>AUTONOMIA</th>
-        </tr>
-        {% for r in dati %}
-        <tr>
-            <td>{{ r[0] }}</td>
-            <td>{{ r[1] }}</td>
-            <td>{{ r[2] }}</td>
-            <td>{{ r[3] }}</td>
-            <td>{{ r[4] }}h</td>
-        </tr>
-        {% endfor %}
-    </table>
-    <a href="/" class="back-btn">⬅ Torna alla Home</a>
+    <nav class="navbar">
+        <a href="/" class="nav-logo">NEXUS <span>ROBOTICS</span></a>
+        <div class="nav-links">
+            <a href="/">Dashboard Home</a>
+            <a href="/tutti_i_robot">System API</a>
+        </div>
+    </nav>
+
+    <div class="dashboard-bar">
+        <div class="status-indicator">SECURE CONNECTION ESTABLISHED</div>
+        <div>NODE: ALPHA-7 | TIMESTAMP: {{ oggi }} | PROTOCOL: IPv6-X</div>
+    </div>
+
+    <header class="page-header">
+        <div class="header-content">
+            <h1>{{ titolo }}</h1>
+            <p>{{ descrizione }}</p>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="table-wrapper">
+            <div class="table-header">
+                <h3>Registro Unità Operative</h3>
+                <span class="record-count">{{ totale }} Record Trovati</span>
+            </div>
+            <table>
+                <tr>
+                    <th>Serial ID</th><th>Designazione Modello</th><th>Classe</th><th>Anno di Entrata</th><th>Cella Energetica</th><th>Stato Rete</th>
+                </tr>
+                {% for r in dati %}
+                <tr>
+                    <td style="font-family: 'JetBrains Mono', monospace; font-weight: bold;">SYS-{{ r[0] }}</td>
+                    <td>{{ r[1] }}</td>
+                    <td><span class="type-badge">{{ r[2] }}</span></td>
+                    <td>{{ r[3] }}</td>
+                    <td>{{ r[4] }} Ore</td>
+                    <td style="color: var(--success-color); font-weight: bold;">ONLINE</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <a href="/" class="btn-back">← Disconnetti e Torna al Mainframe</a>
+    </main>
+
+    <footer class="footer">
+        <div style="max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center;">
+            <p>&copy; 2026 Nexus Robotics Corporation. Tutti i diritti riservati.</p>
+            <div style="font-family: monospace; text-align: right;">
+                SYS_VERSION: 14.5.2<br>
+                SERVER: MARIADB-CORE-01<br>
+                FRAMEWORK: PYTHON/FLASK ENCRYPTED
+            </div>
+        </div>
+    </footer>
 </body>
 </html>
