@@ -39,6 +39,7 @@ with open('robot.csv', mode='r', encoding='utf-8') as file:
     lettore = csv.reader(file)
     
     # Salta la prima riga del file CSV (perché contiene i titoli delle colonne, non i dati)
+    # Se il tuo file NON ha i titoli (Nome, Tipo, ecc.) nella prima riga, questa riga va cancellata!
     next(lettore) 
     
     # Inizia un ciclo che legge i robot uno per uno, riga dopo riga
@@ -47,10 +48,12 @@ with open('robot.csv', mode='r', encoding='utf-8') as file:
         sql = "INSERT INTO Robots (nome, tipo, anno_creazione, autonomia_ore) VALUES (%s, %s, %s, %s)"
         
         # Inserisce i dati della riga corrente al posto dei segnaposto (%s)
-        # riga[0] è il nome, riga[1] il tipo, ecc. (int() trasforma il testo in numero)
+        # riga[0] è il primo dato, riga[1] il secondo, ecc. 
+        # int() è importantissimo: trasforma le scritte del file in numeri veri per il database
         mycursor.execute(sql, (riga[0], riga[1], int(riga[2]), int(riga[3])))
 
 # Salva definitivamente tutte le modifiche nel database (senza questo, i dati andrebbero persi)
+# È come premere "Salva" su un documento prima di chiuderlo
 mydb.commit()
 
 # Stampa a video un messaggio per confermare che tutto è andato bene

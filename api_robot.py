@@ -1,96 +1,96 @@
-# Importa Flask per creare il sito, jsonify per i dati JSON e render_template per le pagine HTML
-from flask import Flask, jsonify, render_template
-# Importa il connettore che permette a Python di parlare con il database MariaDB
+# Importo Flask (per creare il sito), render_template (per aprire le pagine HTML) 
+# e jsonify (per creare la pagina con i dati tecnici JSON)
+from flask import Flask, render_template, jsonify
 import mysql.connector
 
-# Crea l'applicazione Flask e la assegna alla variabile 'app'
+# Creo l'applicazione web e la chiamo "app"
 app = Flask(__name__)
 
-# Crea un dizionario con i dati di accesso (indirizzo, nome utente, password e nome database)
-db_config = {
-    'host': 'localhost',
-    'user': 'pythonuser',
-    'password': 'password123',
-    'database': 'ROBOT_DB'
-}
-
-# Definizione di una funzione per aprire la connessione al database ogni volta che serve
+# Questa funzione serve per collegarsi al database ogni volta che ne abbiamo bisogno
 def get_db_connection():
-    # Restituisce la connessione attiva usando i dati configurati sopra
-    return mysql.connector.connect(**db_config)
+    return mysql.connector.connect(
+        host="localhost",
+        user="pythonuser",
+        password="password123",
+        database="ROBOT_DB" # Dico di usare proprio il database dei robot
+    )
 
-# --- ROTTE DEL SITO (Cosa succede quando visiti i vari indirizzi) ---
-
-# Quando l'utente va all'indirizzo principale (la Home)
-@app.route("/")
+# --- PAGINA INIZIALE ---
+@app.route('/') # Quando l'utente apre l'indirizzo base (es. localhost:5005/)
 def home():
-    # Prende il file 'home.html' dalla cartella templates e lo mostra all'utente
-    return render_template("home.html")
+    # Apri il file home.html che sta nella cartella templates
+    return render_template('home.html')
 
-# Quando l'utente clicca su "DIFESA STRATEGICA" (/combattimento)
-@app.route("/combattimento")
+# --- ROTTA 1: UNITÀ DA COMBATTIMENTO ---
+@app.route('/combattimento') # Quando l'utente clicca sul primo pulsante
 def combattimento():
-    conn = get_db_connection() # Apre la connessione al database
-    cursor = conn.cursor() # Crea un "cursore" (uno strumento per scrivere i comandi SQL)
-    # Esegue il comando SQL per cercare solo i robot di tipo 'Combattimento'
-    cursor.execute("SELECT * FROM Robots WHERE tipo = 'Combattimento'")
-    robots = cursor.fetchall() # Salva tutti i risultati trovati nella variabile 'robots'
-    conn.close() # Chiude la connessione per non sprecare risorse
-    # Invia i dati alla pagina 'table.html' insieme a titolo e sottotitolo personalizzati
-    return render_template("table.html", 
+    db = get_db_connection() # Mi collego al database
+    cursor = db.cursor()     # Prendo la "penna" per scrivere il comando
+    # Chiedo al database solo i robot che hanno come modello 'Combattimento'
+    cursor.execute("SELECT id, nome, modello, anno_produzione, prezzo FROM robots WHERE modello = 'Combattimento'")
+    robots = cursor.fetchall() # Metto i risultati in una lista chiamata 'robots'
+    cursor.close() # Chiudo la penna
+    db.close()     # Chiudo il database
+    # Mando i dati alla pagina 'table.html' e decido i titoli da mostrare
+    return render_template('table.html', 
+                           robots=robots, 
                            titolo="DIFESA STRATEGICA", 
-                           sottotitolo="Protocolli di ingaggio tattico e sicurezza perimetrale.", 
-                           robots=robots, 
-                           badge_text="ATTIVO", 
-                           badge_class="")
+                           sottotitolo="Protocolli tattici unità d'assalto",
+                           badge_text="ATTIVO",
+                           badge_class="neon-blue")
 
-# Quando l'utente clicca su "SISTEMI DEEP-SPACE" (/super_batteria)
-@app.route("/super_batteria")
+# --- ROTTA 2: UNITÀ AD ALTA ENERGIA ---
+@app.route('/super_batteria') # Quando l'utente clicca sul secondo pulsante
 def super_batteria():
-    conn = get_db_connection() # Apre la connessione
-    cursor = conn.cursor() # Prepara il cursore
-    # Cerca i robot che hanno più di 8000 ore di autonomia
-    cursor.execute("SELECT * FROM Robots WHERE autonomia_ore > 8000")
-    robots = cursor.fetchall() # Prende i dati
-    conn.close() # Chiude la connessione
-    # Mostra la tabella con i dati filtrati per la batteria
-    return render_template("table.html", 
+    db = get_db_connection()
+    cursor = db.cursor()
+    # Chiedo i robot che hanno il prezzo (energia) maggiore di 8000
+    cursor.execute("SELECT id, nome, modello, anno_produzione, prezzo FROM robots WHERE prezzo > 8000")
+    robots = cursor.fetchall()
+    cursor.close()
+    db.close()
+    # Mando i dati alla pagina 'table.html' con i titoli per lo spazio
+    return render_template('table.html', 
+                           robots=robots, 
                            titolo="SISTEMI DEEP-SPACE", 
-                           sottotitolo="Metriche reattori a fusione con operatività superiore alle 8000 ore.", 
-                           robots=robots, 
-                           badge_text="OTTIMALE", 
-                           badge_class="status-ottimale")
+                           sottotitolo="Unità a lunga durata operativa",
+                           badge_text="STABILE",
+                           badge_class="neon-blue")
 
-# Quando l'utente clicca su "ARCHIVIO LEGACY" (/modelli_storici)
-@app.route("/modelli_storici")
+# --- ROTTA 3: ROBOT VECCHI (ARCHIVIO) ---
+@app.route('/modelli_storici') # Quando l'utente clicca sul terzo pulsante
 def modelli_storici():
-    conn = get_db_connection() # Apre la connessione
-    cursor = conn.cursor() # Prepara il cursore
-    # Cerca i robot creati prima dell'anno 2000
-    cursor.execute("SELECT * FROM Robots WHERE anno_creazione < 2000")
-    robots = cursor.fetchall() # Prende i dati
-    conn.close() # Chiude la connessione
-    # Mostra la tabella con i modelli vecchi
-    return render_template("table.html", 
-                           titolo="ARCHIVIO LEGACY", 
-                           sottotitolo="Vault di memoria a freddo. Consultazione modelli decommissionati.", 
+    db = get_db_connection()
+    cursor = db.cursor()
+    # Chiedo i robot costruiti prima dell'anno 2000
+    cursor.execute("SELECT id, nome, modello, anno_produzione, prezzo FROM robots WHERE anno_produzione < 2000")
+    robots = cursor.fetchall()
+    cursor.close()
+    db.close()
+    # Mando i dati alla pagina 'table.html' con i titoli "Legacy"
+    return render_template('table.html', 
                            robots=robots, 
-                           badge_text="ARCHIVIATO", 
-                           badge_class="status-archiviato")
+                           titolo="ARCHIVIO LEGACY", 
+                           sottotitolo="Modelli di prima generazione (Pre-2000)",
+                           badge_text="ARCHIVIATO",
+                           badge_class="neon-purple")
 
-# --- ROTTA API JSON (Restituisce i dati puri, senza grafica) ---
+# --- ROTTA API JSON (I DATI GREZZI) ---
+@app.route('/tutti_i_robot') # Quando l'utente clicca su "System API" nella barra in alto
+def tutti_i_robot():
+    db = get_db_connection()
+    # dictionary=True serve per far uscire i dati con i nomi (es. "nome": "Ares")
+    cursor = db.cursor(dictionary=True)
+    cursor.execute("SELECT nome, modello, anno_produzione, prezzo FROM robots")
+    robots = cursor.fetchall()
+    cursor.close()
+    db.close()
+    # Non mando una pagina HTML, ma mando il testo grezzo in formato JSON
+    return jsonify(robots)
 
-@app.route("/tutti_i_robot")
-def api_robots():
-    conn = get_db_connection() # Apre la connessione
-    # dictionary=True trasforma i dati in un formato "etichetta: valore" (es. 'modello': 'NEX-V1')
-    cursor = conn.cursor(dictionary=True) 
-    cursor.execute("SELECT * FROM Robots") # Prende TUTTI i robot della tabella
-    res = cursor.fetchall() # Salva tutto
-    conn.close() # Chiude la connessione
-    return jsonify(res) # Trasforma la lista di Python nel formato standard JSON per il web
-
-# Avvio del server
-if __name__ == "__main__":
-    # Avvia l'app in modalità debug (si riavvia da sola se cambi il codice) sulla porta 5005
-    app.run(debug=True, port=5005)
+# Se questo file viene eseguito, fai partire il server
+if __name__ == '__main__':
+    # host='0.0.0.0' serve per renderlo visibile nel Codespace
+    # port=5005 è la porta che abbiamo scelto
+    # debug=True serve per vedere gli errori se qualcosa si rompe
+    app.run(host='0.0.0.0', port=5005, debug=True)
