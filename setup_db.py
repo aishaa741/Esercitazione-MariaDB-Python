@@ -1,40 +1,48 @@
+# Importo mysql.connector per connettermi a MariaDB
 import mysql.connector
 
-# 1. Ci colleghiamo senza specificare il database (perché dobbiamo ancora crearlo!)
+# Mi collego a MariaDB senza specificare il database perché devo crearlo
 mydb = mysql.connector.connect(
-  host="localhost",
-  user="pythonuser",
-  password="password123"
+  host="localhost",  # Host del database
+  user="pythonuser",  # Utente del database
+  password="password123"  # Password dell'utente
 )
+# Creo un cursore per eseguire le query
 mycursor = mydb.cursor()
 
-# 2. Creiamo il database
+# Creo il database CLASH_ROYALE se non esiste
 mycursor.execute("CREATE DATABASE IF NOT EXISTS CLASH_ROYALE")
+# Seleziono il database CLASH_ROYALE
 mycursor.execute("USE CLASH_ROYALE")
 
-# 3. Creiamo la tabella
+# Creo la tabella Clash_Unit se non esiste con le colonne specificate
 mycursor.execute("""
 CREATE TABLE IF NOT EXISTS Clash_Unit (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(255),
-  transport VARCHAR(255),
-  rarity VARCHAR(255),
-  speed VARCHAR(255),
-  damage INT
+  id INT AUTO_INCREMENT PRIMARY KEY,  # Colonna id auto-incrementante e chiave primaria
+  name VARCHAR(255),  # Colonna name di tipo stringa
+  transport VARCHAR(255),  # Colonna transport di tipo stringa
+  rarity VARCHAR(255),  # Colonna rarity di tipo stringa
+  speed VARCHAR(255),  # Colonna speed di tipo stringa
+  damage INT  # Colonna damage di tipo intero
 )
 """)
 
-# 4. Svuotiamo la tabella nel caso ci fossero vecchi dati e inseriamo 3 truppe di prova
+# Svuoto la tabella Clash_Unit per rimuovere eventuali vecchi dati
 mycursor.execute("TRUNCATE TABLE Clash_Unit")
 
+# Definisco la query SQL per inserire i dati
 sql = "INSERT INTO Clash_Unit (name, transport, rarity, speed, damage) VALUES (%s, %s, %s, %s, %s)"
+# Definisco i valori da inserire
 valori = [
-  ('Cucciolo di Drago', 'Air', 'Epic', 'Fast', 133),
-  ('Cavaliere', 'Ground', 'Common', 'Medium', 167),
-  ('Mongolfiera', 'Air', 'Epic', 'Medium', 798)
+  ('Cucciolo di Drago', 'Air', 'Epic', 'Fast', 133),  # Primo record
+  ('Cavaliere', 'Ground', 'Common', 'Medium', 167),  # Secondo record
+  ('Mongolfiera', 'Air', 'Epic', 'Medium', 798)  # Terzo record
 ]
 
+# Eseguo l'inserimento di più record
 mycursor.executemany(sql, valori)
+# Confermo le modifiche al database
 mydb.commit()
 
+# Stampo un messaggio di successo
 print("✅ Magia completata! Database CLASH_ROYALE e tabella creati con successo!")
