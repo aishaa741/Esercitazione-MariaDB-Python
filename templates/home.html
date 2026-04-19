@@ -1,81 +1,92 @@
-<!DOCTYPE html> <!-- pagina HTML5 -->
-<html lang="it"> <!-- lingua italiano -->
+<!DOCTYPE html>
+<html lang="it">
 <head>
-    <meta charset="UTF-8"> <!-- codifica caratteri UTF-8 -->
-    <title>NEXUS CORPORATION | Advanced AI</title> <!-- titolo della pagina -->
-    <style> <!-- stile CSS interno -->
+    <meta charset="UTF-8">
+    <title>NEXUS OS | Mainframe</title>
+    <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;700&display=swap');
-        :root { /* colori e variabili usate in tutta la pagina */
+        
+        :root {
             --neon-blue: #00f3ff;
-            --neon-purple: #bc13fe;
             --dark-bg: #050505;
-            --glass-bg: rgba(15, 15, 20, 0.65);
+            --glass-bg: rgba(15, 15, 20, 0.6);
             --glass-border: rgba(0, 243, 255, 0.2);
             --text-main: #ffffff;
-            --text-muted: #a0aab2;
-            --table-row-hover: rgba(0, 243, 255, 0.05);
+            --text-muted: #8899a6;
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; } <!-- reset base -->
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Rajdhani', sans-serif; background-color: var(--dark-bg); color: var(--text-main); overflow-x: hidden; }
-        .navbar { position: fixed; top: 0; width: 100%; z-index: 1000; background: rgba(5, 5, 5, 0.8); backdrop-filter: blur(15px); padding: 1.5rem 5%; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--glass-border); box-shadow: 0 0 20px rgba(0, 243, 255, 0.1); }
-        .nav-logo { font-family: 'Orbitron', sans-serif; color: var(--text-main); font-weight: 900; font-size: 1.8rem; text-decoration: none; letter-spacing: 3px; text-shadow: 0 0 10px var(--neon-blue); }
-        .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 1.1rem; margin-left: 2.5rem; text-transform: uppercase; font-weight: 600; letter-spacing: 1px; transition: 0.3s; }
-        .nav-links a:hover { color: var(--neon-blue); text-shadow: 0 0 8px var(--neon-blue); }
-        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: linear-gradient(rgba(5,5,5,0.92), rgba(5,5,5,0.85)), url('https://images.unsplash.com/photo-1485827404703-89b55fcc595e?q=80&w=1920&auto=format&fit=crop') center/cover no-repeat fixed; position: relative; padding-top: 6rem; }
-        .hero-content { background: var(--glass-bg); padding: 4rem; border-radius: 20px; border: 1px solid var(--glass-border); backdrop-filter: blur(10px); box-shadow: 0 0 30px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(0, 243, 255, 0.05); animation: float 6s ease-in-out infinite; max-width: 920px; }
+
+        /* Barra di Navigazione */
+        .navbar {
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            background: rgba(5, 5, 5, 0.8); backdrop-filter: blur(15px);
+            padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        .nav-logo {
+            font-family: 'Orbitron', sans-serif; color: var(--text-main); font-weight: 900; font-size: 1.8rem;
+            text-decoration: none; letter-spacing: 3px; text-shadow: 0 0 10px var(--neon-blue);
+        }
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 1rem; text-transform: uppercase; font-weight: 600; letter-spacing: 1px; }
+
+        /* Sezione Hero con Robot sfuocato */
+        .hero {
+            height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
+            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), 
+                        url('https://images.unsplash.com/photo-1555255707-c07966088b7b?q=80&w=1920&auto=format&fit=crop') center/cover no-repeat;
+        }
+        .hero-content {
+            background: var(--glass-bg); padding: 4rem; border-radius: 20px; border: 1px solid var(--glass-border);
+            backdrop-filter: blur(10px); animation: float 6s ease-in-out infinite;
+        }
         @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0px); } }
-        .hero h1 { font-family: 'Orbitron', sans-serif; font-size: 5.5rem; font-weight: 900; letter-spacing: 8px; background: linear-gradient(45deg, var(--text-main), var(--neon-blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 1rem; text-shadow: 0 0 30px rgba(0, 243, 255, 0.3); }
-        .hero p { font-size: 1.5rem; color: var(--text-muted); font-weight: 500; max-width: 700px; margin: 0 auto 3rem; letter-spacing: 1px; }
-        .btn-glow { display: inline-block; padding: 1.2rem 3rem; background: transparent; color: var(--neon-blue); border: 2px solid var(--neon-blue); border-radius: 4px; font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 3px; text-decoration: none; transition: 0.4s; position: relative; overflow: hidden; box-shadow: 0 0 15px rgba(0, 243, 255, 0.2), inset 0 0 15px rgba(0, 243, 255, 0.2); }
-        .btn-glow:hover { background: var(--neon-blue); color: var(--dark-bg); box-shadow: 0 0 30px var(--neon-blue), inset 0 0 10px rgba(255,255,255,0.5); }
-        .container { max-width: 1400px; margin: -5rem auto 5rem; padding: 0 2rem; position: relative; z-index: 10; } <!-- area delle card -->
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 2.5rem; } <!-- griglia delle card -->
-        .glass-card { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: 15px; padding: 3rem; text-decoration: none; color: inherit; transition: 0.4s ease; display: block; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .hero h1 { font-family: 'Orbitron', sans-serif; font-size: 5.5rem; font-weight: 900; color: var(--neon-blue); margin-bottom: 1rem; text-shadow: 0 0 30px rgba(0, 243, 255, 0.3); }
+        .hero p { font-size: 1.5rem; color: var(--text-muted); max-width: 700px; margin-bottom: 3rem; }
+        .btn-glow { display: inline-block; padding: 1rem 2.5rem; color: var(--neon-blue); border: 2px solid var(--neon-blue); border-radius: 4px; font-family: 'Orbitron'; text-decoration: none; text-transform: uppercase; transition: 0.4s; }
+        .btn-glow:hover { background: var(--neon-blue); color: black; box-shadow: 0 0 20px var(--neon-blue); }
+
+        /* Contenitore Griglia e Card */
+        .container { max-width: 1400px; margin: -5rem auto 5rem; padding: 0 2rem; position: relative; z-index: 10; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 2.5rem; }
+        .glass-card {
+            background: var(--glass-bg); backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border); border-radius: 15px;
+            padding: 3rem; text-decoration: none; color: inherit;
+            transition: 0.4s ease; display: block;
+        }
         .glass-card:hover { transform: translateY(-10px); border-color: var(--neon-blue); box-shadow: 0 15px 40px rgba(0, 243, 255, 0.2); }
+        .glass-card span { color: var(--text-muted); font-family: 'Orbitron', sans-serif; font-size: 0.9rem; margin-bottom: 10px; display: block; }
         .glass-card h3 { font-family: 'Orbitron', sans-serif; font-size: 1.8rem; color: var(--neon-blue); margin-bottom: 1rem; }
         .glass-card p { font-size: 1.2rem; color: var(--text-muted); line-height: 1.6; }
-        footer { text-align: center; padding: 3rem; font-family: 'Orbitron', sans-serif; color: var(--text-muted); border-top: 1px solid var(--glass-border); background: #000; letter-spacing: 2px; }
+
+        footer { text-align: center; padding: 3rem; background: #000; color: var(--text-muted); border-top: 1px solid var(--glass-border); font-family: 'Orbitron'; letter-spacing: 2px; }
     </style>
 </head>
-<body> <!-- corpo della pagina -->
-    <nav class="navbar"> <!-- menu fisso in alto -->
-        <a href="/" class="nav-logo">NEXUS_OS</a> <!-- torna alla home -->
-        <div class="nav-links"> <!-- link di navigazione -->
-            <a href="#database">Database Access</a>
-            <a href="/tutti_i_robot">Developer API</a>
+<body>
+    <nav class="navbar">
+        <a href="/" class="nav-logo">NEXUS_OS</a>
+        <div class="nav-links">
+            <a href="/">Mainframe</a>
+            <a href="/tutti_i_robot">System API</a>
         </div>
     </nav>
-
-    <section class="hero"> <!-- sezione iniziale con immagine e titolo -->
-        <div class="hero-content"> <!-- box effetto vetro -->
-            <h1>NEXUS CORE</h1> <!-- titolo grande -->
-            <p>Infrastruttura di gestione server per sistemi autonomi di grado militare e spaziale. Controllo totale. Telemetria in tempo reale.</p> <!-- testo di presentazione -->
-            <a href="#database" class="btn-glow">INIZIALIZZA SISTEMA</a> <!-- pulsante principale -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>NEXUS CORE</h1>
+            <p>Infrastruttura di gestione server per sistemi autonomi di grado militare e spaziale. Controllo totale. Telemetria in tempo reale.</p>
+            <a href="#database" class="btn-glow">Inizializza Sistema</a>
         </div>
     </section>
-
-    <div class="container" id="database"> <!-- sezione con le schede dei reparti -->
-        <div class="grid"> <!-- griglia di 3 schede -->
-            <a href="/combattimento" class="glass-card"> <!-- link al reparto combattimento -->
-                <div style="font-family: 'Orbitron', sans-serif; color: var(--text-muted); margin-bottom: 10px;">// DIR-01</div> <!-- etichetta reparto -->
-                <h3>DIFESA STRATEGICA</h3>
-                <p>Accedi ai registri delle unità da combattimento. Monitoraggio armamenti, sicurezza perimetrale e protocolli di ingaggio tattico.</p>
-            </a>
-            <a href="/super_batteria" class="glass-card"> <!-- link al reparto super batteria -->
-                <div style="font-family: 'Orbitron', sans-serif; color: var(--text-muted); margin-bottom: 10px;">// DIR-02</div>
-                <h3>SISTEMI DEEP-SPACE</h3>
-                <p>Unità ad alta efficienza energetica. Visualizza le metriche dei reattori a fusione con operatività superiore alle 8000 ore ininterrotte.</p>
-            </a>
-            <a href="/modelli_storici" class="glass-card"> <!-- link al reparto modelli storici -->
-                <div style="font-family: 'Orbitron', sans-serif; color: var(--text-muted); margin-bottom: 10px;">// DIR-03</div>
-                <h3>ARCHIVIO LEGACY</h3>
-                <p>Vault di memoria a freddo. Consultazione dei log storici e dei vecchi modelli di prima generazione per analisi predittive.</p>
-            </a>
+    <div class="container" id="database">
+        <div class="grid">
+            <a href="/combattimento" class="glass-card"><span>// DIR-01</span><h3>DIFESA STRATEGICA</h3><p>Accedi ai registri delle unità da combattimento e protocolli tattici.</p></a>
+            <a href="/super_batteria" class="glass-card"><span>// DIR-02</span><h3>SISTEMI DEEP-SPACE</h3><p>Unità ad alta efficienza energetica superiore alle 8000 ore.</p></a>
+            <a href="/modelli_storici" class="glass-card"><span>// DIR-03</span><h3>ARCHIVIO LEGACY</h3><p>Vault di memoria a freddo. Consultazione modelli di prima generazione.</p></a>
         </div>
     </div>
-
-    <footer> <!-- footer della pagina -->
-        © 2026 NEXUS CORPORATION - CONNESSIONE QUANTISTICA CRIPTATA
-    </footer>
+    <footer>© 2026 NEXUS CORPORATION - CONNESSIONE QUANTISTICA CRIPTATA</footer>
 </body>
 </html>
