@@ -1,73 +1,98 @@
 <!DOCTYPE html>
-<html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <title>NEXUS OS | {{ titolo }}</title>
+<html lang="it"> <head>
+    <meta charset="UTF-8"> <title>NEXUS OS | {{ titolo }}</title> 
+    
     <style>
+        /* Importa i font futuristici da Google Fonts */
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;700&display=swap');
         
+        /* Definizione dei colori "neon" che useremo in tutta la pagina */
         :root {
             --neon-blue: #00f3ff;
             --neon-purple: #bc13fe;
             --dark-bg: #050505;
-            --glass-bg: rgba(15, 15, 20, 0.85);
+            --glass-bg: rgba(15, 15, 20, 0.85); /* Sfondo scuro semi-trasparente */
             --glass-border: rgba(0, 243, 255, 0.2);
             --text-main: #ffffff;
             --text-muted: #8899a6;
         }
 
+        /* Reset: toglie margini di default e imposta il calcolo corretto delle grandezze */
         * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        /* Corpo della pagina: font principale, colore sfondo e spazio in alto per la navbar */
         body { font-family: 'Rajdhani', sans-serif; background-color: var(--dark-bg); color: var(--text-main); padding-top: 100px; }
 
-        /* Barra di Navigazione */
+        /* Barra di Navigazione: rimane fissa in alto (fixed) e sfoca lo sfondo (blur) */
         .navbar {
             position: fixed; top: 0; width: 100%; z-index: 1000;
             background: rgba(5, 5, 5, 0.9); backdrop-filter: blur(15px);
             padding: 1.5rem 5%; display: flex; justify-content: space-between; align-items: center;
             border-bottom: 1px solid var(--glass-border);
         }
+        
+        /* Logo nella navbar: stile futuristico e tutto maiuscolo */
         .nav-logo {
             font-family: 'Orbitron', sans-serif; color: var(--text-main); font-weight: 900; font-size: 1.8rem;
             text-decoration: none; letter-spacing: 3px;
         }
-        .nav-links a { color: var(--text-muted); text-decoration: none; text-transform: uppercase; font-weight: 600; }
+        
+        /* Link della navbar: colore grigio e scritte in maiuscolo */
+        .nav-links a { color: var(--text-muted); text-decoration: none; text-transform: uppercase; font-weight: 600; margin-left: 20px; }
 
-        /* Intestazione Pagina con Grafico Sfuocato */
+        /* Intestazione della pagina: ha uno sfondo con un'immagine sfuocata e un gradiente scuro */
         .page-header {
             padding: 8rem 2rem 3rem; text-align: center;
             background: linear-gradient(rgba(5,5,5,0.7) 0%, rgba(5,5,5,1) 100%), 
                         url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1920&auto=format&fit=crop') center/cover no-repeat;
         }
+        
+        /* Titolo grande: azzurro neon con un effetto "luce" (text-shadow) */
         .page-header h1 { font-family: 'Orbitron'; font-size: 4rem; color: var(--neon-blue); text-shadow: 0 0 20px rgba(0, 243, 255, 0.5); margin-bottom: 1rem; }
         .page-header p { font-size: 1.2rem; color: var(--text-muted); max-width: 800px; margin: 0 auto; }
 
-        /* Tabella Dati */
+        /* Contenitore della tabella: effetto vetro sfuocato e bordi arrotondati */
         .table-wrapper {
             background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 15px;
             padding: 2rem; margin: 3rem auto; max-width: 1400px;
             box-shadow: 0 0 30px rgba(0,0,0,0.8); backdrop-filter: blur(10px);
         }
+        
+        /* Tabella: occupa tutto lo spazio disponibile */
         table { width: 100%; border-collapse: collapse; text-align: left; }
+        
+        /* Intestazioni tabella (le celle in alto): colore azzurro neon */
         th { padding: 1.5rem; color: var(--neon-blue); font-family: 'Orbitron'; font-size: 1rem; border-bottom: 2px solid var(--glass-border); }
+        
+        /* Celle dei dati: bordo sottile sotto ogni riga */
         td { padding: 1.2rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 1.1rem; }
+        
+        /* Effetto al passaggio del mouse: la riga si illumina leggermente */
         tr:hover td { background: rgba(0, 243, 255, 0.05); color: #fff; }
         
+        /* Etichetta di stato (es: ATTIVO): un bordino colorato arrotondato */
         .status-badge { border: 1px solid var(--neon-blue); color: var(--neon-blue); padding: 0.3rem 1rem; border-radius: 50px; font-weight: bold; }
+        
+        /* Pulsante per tornare indietro: stile neon che cambia colore al passaggio del mouse */
         .btn-back { display: inline-block; padding: 0.8rem 2rem; border: 1px solid var(--neon-blue); color: var(--neon-blue); text-decoration: none; font-family: 'Orbitron'; margin-top: 2rem; transition: 0.3s; }
         .btn-back:hover { background: var(--neon-blue); color: #000; }
 
+        /* Piè di pagina (fondo): nero con bordo azzurro in alto */
         footer { text-align: center; padding: 3rem; background: #000; color: var(--text-muted); border-top: 1px solid var(--glass-border); font-family: 'Orbitron'; }
     </style>
 </head>
 <body>
     <nav class="navbar">
         <a href="/" class="nav-logo">NEXUS_OS</a>
-        <div class="nav-links"><a href="/">Mainframe</a><a href="/tutti_i_robot">System API</a></div>
+        <div class="nav-links">
+            <a href="/">Mainframe</a> <a href="/tutti_i_robot">System API</a> </div>
     </nav>
+
     <div class="page-header">
         <h1>{{ titolo }}</h1>
         <p>{{ sottotitolo }}</p>
     </div>
+
     <div class="container" style="padding: 0 2rem;">
         <div class="table-wrapper">
             <table>
@@ -78,15 +103,18 @@
                     {% for r in robots %}
                     <tr>
                         <td style="font-family: Orbitron; color: var(--neon-purple);">[{{ r[0] }}]</td>
-                        <td>{{ r[1] }}</td><td>{{ r[2] }}</td><td>{{ r[3] }}</td><td>{{ r[4] }}H</td>
-                        <td><span class="status-badge {{ badge_class }}">{{ badge_text }}</span></td>
+                        <td>{{ r[1] }}</td> <td>{{ r[2] }}</td> <td>{{ r[3] }}</td> <td>{{ r[4] }}H</td> <td><span class="status-badge {{ badge_class }}">{{ badge_text }}</span></td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
-        <div style="text-align: center; margin-bottom: 5rem;"><a href="/" class="btn-back">← Torna al Mainframe</a></div>
+        
+        <div style="text-align: center; margin-bottom: 5rem;">
+            <a href="/" class="btn-back">← Torna al Mainframe</a>
+        </div>
     </div>
+
     <footer>© 2026 NEXUS CORPORATION - CONNESSIONE QUANTISTICA CRIPTATA</footer>
 </body>
 </html>

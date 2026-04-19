@@ -1,67 +1,100 @@
 <!DOCTYPE html>
-<html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <title>NEXUS OS | Mainframe</title>
-    <style>
+<html lang="it"> <head>
+    <meta charset="UTF-8"> <title>NEXUS OS | Mainframe</title> <style>
+        /* Importa i font (stili di scrittura) futuristici da internet */
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;700&display=swap');
         
+        /* Definisce i colori principali del sito per poterli riutilizzare facilmente */
         :root {
             --neon-blue: #00f3ff;
             --dark-bg: #050505;
-            --glass-bg: rgba(15, 15, 20, 0.6);
-            --glass-border: rgba(0, 243, 255, 0.2);
+            --glass-bg: rgba(15, 15, 20, 0.6); /* Sfondo scuro un po' trasparente */
+            --glass-border: rgba(0, 243, 255, 0.2); /* Bordo azzurrino trasparente */
             --text-main: #ffffff;
-            --text-muted: #8899a6;
+            --text-muted: #8899a6; /* Colore grigio per i testi meno importanti */
         }
 
+        /* Applica a tutto il sito il calcolo corretto delle dimensioni e toglie i margini inutili */
         * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        /* Imposta il font, lo sfondo nero e impedisce la comparsa della barra di scorrimento orizzontale */
         body { font-family: 'Rajdhani', sans-serif; background-color: var(--dark-bg); color: var(--text-main); overflow-x: hidden; }
 
-        /* Barra di Navigazione */
+        /* Stile della barra di navigazione: resta sempre in alto e sfoca quello che c'è sotto */
         .navbar {
             position: fixed; top: 0; width: 100%; z-index: 1000;
             background: rgba(5, 5, 5, 0.8); backdrop-filter: blur(15px);
             padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center;
             border-bottom: 1px solid var(--glass-border);
         }
+        
+        /* Stile del logo nella barra: testo illuminato e spaziatura tra le lettere */
         .nav-logo {
             font-family: 'Orbitron', sans-serif; color: var(--text-main); font-weight: 900; font-size: 1.8rem;
             text-decoration: none; letter-spacing: 3px; text-shadow: 0 0 10px var(--neon-blue);
         }
+        
+        /* Layout dei link nella barra di navigazione */
         .nav-links { display: flex; gap: 30px; }
+        
+        /* Stile dei link: scritte piccole, grigie e tutto maiuscolo */
         .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 1rem; text-transform: uppercase; font-weight: 600; letter-spacing: 1px; }
 
-        /* Sezione Hero con Robot sfuocato */
+        /* Sezione principale (Hero): occupa tutta l'altezza dello schermo con immagine di sfondo */
         .hero {
             height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;
             background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), 
                         url('https://images.unsplash.com/photo-1555255707-c07966088b7b?q=80&w=1920&auto=format&fit=crop') center/cover no-repeat;
         }
+        
+        /* Pannello centrale sopra l'immagine: effetto vetro sfuocato e animazione che galleggia */
         .hero-content {
             background: var(--glass-bg); padding: 4rem; border-radius: 20px; border: 1px solid var(--glass-border);
             backdrop-filter: blur(10px); animation: float 6s ease-in-out infinite;
         }
+        
+        /* Crea l'animazione "float" che fa muovere il pannello su e giù */
         @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-15px); } 100% { transform: translateY(0px); } }
+        
+        /* Stile del titolo gigante al centro */
         .hero h1 { font-family: 'Orbitron', sans-serif; font-size: 5.5rem; font-weight: 900; color: var(--neon-blue); margin-bottom: 1rem; text-shadow: 0 0 30px rgba(0, 243, 255, 0.3); }
+        
+        /* Testo descrittivo sotto il titolo */
         .hero p { font-size: 1.5rem; color: var(--text-muted); max-width: 700px; margin-bottom: 3rem; }
+        
+        /* Bottone che si illumina: bordo neon e scritte maiuscole */
         .btn-glow { display: inline-block; padding: 1rem 2.5rem; color: var(--neon-blue); border: 2px solid var(--neon-blue); border-radius: 4px; font-family: 'Orbitron'; text-decoration: none; text-transform: uppercase; transition: 0.4s; }
+        
+        /* Effetto quando passi il mouse sul bottone: si riempie di azzurro e si illumina */
         .btn-glow:hover { background: var(--neon-blue); color: black; box-shadow: 0 0 20px var(--neon-blue); }
 
-        /* Contenitore Griglia e Card */
+        /* Contenitore per le schede (card): posizionato sopra la sezione hero */
         .container { max-width: 1400px; margin: -5rem auto 5rem; padding: 0 2rem; position: relative; z-index: 10; }
+        
+        /* Griglia delle schede: si adatta da sola se lo schermo è piccolo */
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 2.5rem; }
+        
+        /* Scheda (Card) con effetto vetro: trasparente e sfuocata */
         .glass-card {
             background: var(--glass-bg); backdrop-filter: blur(12px);
             border: 1px solid var(--glass-border); border-radius: 15px;
             padding: 3rem; text-decoration: none; color: inherit;
             transition: 0.4s ease; display: block;
         }
+        
+        /* Effetto quando passi il mouse sulla scheda: si alza e cambia colore ai bordi */
         .glass-card:hover { transform: translateY(-10px); border-color: var(--neon-blue); box-shadow: 0 15px 40px rgba(0, 243, 255, 0.2); }
+        
+        /* Piccola etichetta grigia sopra il titolo della scheda */
         .glass-card span { color: var(--text-muted); font-family: 'Orbitron', sans-serif; font-size: 0.9rem; margin-bottom: 10px; display: block; }
+        
+        /* Titolo della scheda in azzurro neon */
         .glass-card h3 { font-family: 'Orbitron', sans-serif; font-size: 1.8rem; color: var(--neon-blue); margin-bottom: 1rem; }
+        
+        /* Testo della scheda */
         .glass-card p { font-size: 1.2rem; color: var(--text-muted); line-height: 1.6; }
 
+        /* Fondo pagina: nero totale con testo centrato */
         footer { text-align: center; padding: 3rem; background: #000; color: var(--text-muted); border-top: 1px solid var(--glass-border); font-family: 'Orbitron'; letter-spacing: 2px; }
     </style>
 </head>
@@ -69,24 +102,35 @@
     <nav class="navbar">
         <a href="/" class="nav-logo">NEXUS_OS</a>
         <div class="nav-links">
-            <a href="/">Mainframe</a>
-            <a href="/tutti_i_robot">System API</a>
-        </div>
+            <a href="/">Mainframe</a> <a href="/tutti_i_robot">System API</a> </div>
     </nav>
+
     <section class="hero">
         <div class="hero-content">
-            <h1>NEXUS CORE</h1>
-            <p>Infrastruttura di gestione server per sistemi autonomi di grado militare e spaziale. Controllo totale. Telemetria in tempo reale.</p>
-            <a href="#database" class="btn-glow">Inizializza Sistema</a>
-        </div>
+            <h1>NEXUS CORE</h1> <p>Infrastruttura di gestione server per sistemi autonomi di grado militare e spaziale. Controllo totale. Telemetria in tempo reale.</p>
+            <a href="#database" class="btn-glow">Inizializza Sistema</a> </div>
     </section>
+
     <div class="container" id="database">
         <div class="grid">
-            <a href="/combattimento" class="glass-card"><span>// DIR-01</span><h3>DIFESA STRATEGICA</h3><p>Accedi ai registri delle unità da combattimento e protocolli tattici.</p></a>
-            <a href="/super_batteria" class="glass-card"><span>// DIR-02</span><h3>SISTEMI DEEP-SPACE</h3><p>Unità ad alta efficienza energetica superiore alle 8000 ore.</p></a>
-            <a href="/modelli_storici" class="glass-card"><span>// DIR-03</span><h3>ARCHIVIO LEGACY</h3><p>Vault di memoria a freddo. Consultazione modelli di prima generazione.</p></a>
+            <a href="/combattimento" class="glass-card">
+                <span>// DIR-01</span>
+                <h3>DIFESA STRATEGICA</h3>
+                <p>Accedi ai registri delle unità da combattimento e protocolli tattici.</p>
+            </a>
+            <a href="/super_batteria" class="glass-card">
+                <span>// DIR-02</span>
+                <h3>SISTEMI DEEP-SPACE</h3>
+                <p>Unità ad alta efficienza energetica superiore alle 8000 ore.</p>
+            </a>
+            <a href="/modelli_storici" class="glass-card">
+                <span>// DIR-03</span>
+                <h3>ARCHIVIO LEGACY</h3>
+                <p>Vault di memoria a freddo. Consultazione modelli di prima generazione.</p>
+            </a>
         </div>
     </div>
+
     <footer>© 2026 NEXUS CORPORATION - CONNESSIONE QUANTISTICA CRIPTATA</footer>
 </body>
 </html>
